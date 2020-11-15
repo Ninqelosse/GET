@@ -53,29 +53,39 @@ def adc():
     while True:
         num2dac(D,j)
         time.sleep(0.01)
-        if b-c==2 : 
+        if b-c==2 or j==0 : 
             Voltage=int(((j*3.3)/256)*100)/100
             print("Digital value: ", j , ", Analog Value: ", Voltage, "V")
             return j
             break
-        elif GPIO.input(4)==0:
+        elif GPIO.input(4)==1:
             c=j
             j=int((c+b)/2)    
-        elif GPIO.input(4)==1: 
+        elif GPIO.input(4)==0: 
             b=j
             j=int((c+b)/2) 
 try:
+    while adc()>0:
+        GPIO.output(17,0)
+        print ("uuu")
+        time.sleep(1)
+
     t_st = time.time()
     listV = [] 
     listT = [] 
+    measure = []
     GPIO.output(17,1)
     while adc() < 256:
         listT.append(time.time()-t_st)
+        measure.append(adc())
         listV.append((adc()*3.3)/256)
         time.sleep(0.01)
+        if adc()>=252:
+            break
     GPIO.output(17,0)
     while adc() > 0:
         listT.append(time.time()-t_st)
+        measure.append(adc())
         listV.append((adc()*3.3)/256)
         time.sleep(0.01)
     plt.plot(listV, 'r-')
@@ -83,12 +93,15 @@ try:
     np.savetxt('data.txt', listV, fmt='%d') #7
 
     dT=0
-    for i in range (len(listT)):
-        dT=dT+listT[i]
-    dT=dT/len(listT)
-    dV=len(listV)
+    for i in range (len(listT)-1):
+        dT=dT+abs(listT[i+1]-listT[i]
+    dT=dT/(len(listT)-1)
+    dV=0
+    for i in range (len(listV)-1):
+        dV=dV+abs(listV[i+1]-listV[i]
+    dV=dV/(len(listV)-1)
     X =  [dT, dV]
-    np.savetxt('settings.txt', X, fmt='%d') 
+    np.savetxt('settings.txt', X, fmt='%f') 
 
     plt.plot(listT,listV, 'r-')#10
     plt.title('График зависимости напряжения на конденсаторе от времени')
