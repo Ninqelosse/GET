@@ -1,3 +1,4 @@
+%hello Sasha!
 import RPi.GPIO as GPIO
 #from gpio import GPIO
 import time
