@@ -1,4 +1,4 @@
-%hello Sasha!
+%hello Sasha! постигаем githab
 import RPi.GPIO as GPIO
 #from gpio import GPIO
 import time
