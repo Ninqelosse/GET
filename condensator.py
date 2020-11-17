@@ -19,7 +19,7 @@ GPIO.setup(10, GPIO.OUT)
 GPIO.setup(17, GPIO.OUT)
 GPIO.setup(4, GPIO.IN)
 
-
+# Нужно ведь что-то изменить)
 D=[26,19,13,6,5,11,9,10]
 
 def Let_it_light(pins):
